@@ -25,7 +25,7 @@ spec:
             - configMapRef: { name: notification-config }
             - secretRef:    { name: notification-secrets }
           readinessProbe:
-            httpGet: { path: /health/, port: 8000 }
+            httpGet: { path: /ready/, port: 8000 }
             initialDelaySeconds: 10
             periodSeconds: 10
           livenessProbe:
