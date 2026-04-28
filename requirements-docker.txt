@@ -1,0 +1,3 @@
+# Extra requirements layered on top of requirements.txt for the Docker image.
+# psycopg2 needs libpq + build tools, which the Dockerfile already installs.
+psycopg2-binary==2.9.9

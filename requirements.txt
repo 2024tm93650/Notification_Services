@@ -1,0 +1,9 @@
+Django==4.2.7
+djangorestframework==3.14.0
+django-filter==23.5
+django-prometheus==2.3.1
+# psycopg2-binary is only needed when DB_ENGINE=postgres (Docker/K8s).
+# Install separately on dev machines that need it: pip install psycopg2-binary
+python-dotenv==1.0.0
+gunicorn==21.2.0
+requests==2.31.0

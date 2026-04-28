@@ -1,0 +1,43 @@
+version: '3.9'
+
+services:
+  notification-db:
+    image: postgres:15-alpine
+    container_name: notification-db
+    environment:
+      POSTGRES_DB: notification_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - notification_db_data:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  notification-service:
+    build: .
+    container_name: notification-service
+    environment:
+      DEBUG: "False"
+      SECRET_KEY: dev-secret-change-me
+      ALLOWED_HOSTS: "*"
+      DB_ENGINE: postgres
+      DB_NAME: notification_db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: notification-db
+      DB_PORT: "5432"
+      EMAIL_BACKEND: django.core.mail.backends.console.EmailBackend
+      DEFAULT_FROM_EMAIL: no-reply@ticketing.local
+    ports:
+      - "8005:8000"
+    depends_on:
+      notification-db:
+        condition: service_healthy
+
+volumes:
+  notification_db_data:
